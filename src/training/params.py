@@ -38,7 +38,7 @@ def parse_args():
     )
     parser.add_argument(
         "--dataset-type",
-        choices=["webdataset", "csv", "auto"],
+        choices=["webdataset", "csv", "synthetic", "auto"],
         default="auto",
         help="Which type of dataset to process."
     )
@@ -187,6 +187,12 @@ def parse_args():
         action='store_true',
         help="Freeze BatchNorm running stats in image tower for any locked layers.",
     )
+    parser.add_argument(
+        '--image-mean', type=float, nargs='+', default=None, metavar='MEAN',
+        help='Override default image mean value of dataset')
+    parser.add_argument(
+        '--image-std', type=float, nargs='+', default=None, metavar='STD',
+        help='Override default image std deviation of of dataset')
     parser.add_argument(
         "--grad-checkpointing",
         default=False,
