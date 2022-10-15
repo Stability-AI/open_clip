@@ -343,13 +343,14 @@ class Transformer(nn.Module):
             for _ in range(layers)
         ])
 
-    def forward(self, x: torch.Tensor, attn_mask: Optional[torch.Tensor] = None):
+    def forward(self, x: torch.Tensor, attn_mask: Optional[torch.Tensor] = None, skip_last_layer=False):
         for r in self.resblocks:
+            x_ = x
             if self.grad_checkpointing and not torch.jit.is_scripting():
                 x = checkpoint(r, x, attn_mask)
             else:
                 x = r(x, attn_mask=attn_mask)
-        return x
+        return x_ if skip_last_layer else x
 
 
 class VisualTransformer(nn.Module):
