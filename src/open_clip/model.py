@@ -350,7 +350,7 @@ class Transformer(nn.Module):
                 x = checkpoint(r, x, attn_mask)
             else:
                 x = r(x, attn_mask=attn_mask)
-        return x_ if skip_last_layer else x
+        return x_ * skip_last_layer + x * (1-skip_last_layer)
 
 
 class VisualTransformer(nn.Module):
